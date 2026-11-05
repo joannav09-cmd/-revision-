@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Revise">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><meta name="theme-color" content="#0e1116"><title>A-level Revision: Maths & Chemistry</title>
+<style>
+:root{--bg:#0e1116;--card:#171b22;--tx:#e8ecf2;--mu:#8b95a5;--bd:#262c36;--m:#6ea8ff;--c:#4fe0b0;--bad:#ff7a7a;--ok:#4fe0b0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html,body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{max-width:760px;margin:0 auto;padding:12px 14px 90px}
+h1{font-size:20px;margin:6px 0 10px}h2{font-size:17px;margin:14px 0 6px}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#12161dee;border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px);backdrop-filter:blur(8px)}
+nav button{flex:1;background:none;border:0;color:var(--mu);padding:12px 2px;font-size:13px}
+nav button.on{color:var(--tx);font-weight:600}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;margin:10px 0}
+details{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin:8px 0;padding:10px 12px}
+summary{cursor:pointer;font-weight:600}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{border-radius:99px;padding:4px 10px;font-size:12px;border:1px solid var(--bd);background:#0e1116;color:var(--mu)}
+button.b,input,select{font:inherit;color:var(--tx);background:#0e1116;border:1px solid var(--bd);border-radius:10px;padding:8px 10px}
+button.b{cursor:pointer}button.b.pri{background:var(--ac);color:#06130e;border:0;font-weight:600}
+.M{--ac:var(--m)}.C{--ac:var(--c)}
+.bar{height:8px;background:#0e1116;border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ac)}
+.mu{color:var(--mu);font-size:14px}.ok{color:var(--ok)}.bad{color:var(--bad)}
+.sol{background:#0e1116;border-left:3px solid var(--ac);padding:8px 10px;margin-top:8px;border-radius:6px}
+.tag{font-size:12px;color:var(--ac)}
+.tabs{display:flex;gap:8px;margin-bottom:8px}.tabs button{flex:1}
+</style></head><body>
+<h1>📚 My A-level Revision</h1>
+<div id="app"></div>
+<nav id="nav"></nav>
+<script>
+const T=[ // topics with content
+{id:'m1',s:'M',g:'Pure',n:'Algebra and functions (quadratics)',teach:'<b>Quadratics.</b> To solve ax²+bx+c=0: factorise, complete the square, or use the formula x=(−b±√(b²−4ac))/2a. The <b>discriminant</b> Δ=b²−4ac tells you the roots: Δ&gt;0 two real roots, Δ=0 one repeated root, Δ&lt;0 no real roots. <b>Completing the square:</b> x²+bx+c=(x+b/2)²+c−b²/4, so the turning point is (−b/2, c−b²/4). <br><span class="bad">Common mistake:</span> forgetting to halve b, or losing the sign of the constant.',qs:[
+{q:'Solve x²−5x−14=0. Give the LARGER root.',a:[7],m:3,sol:'Factorise: (x−7)(x+2)=0 [M1]. Roots x=7 and x=−2 [A1]. Larger root is 7 [A1].'},
+{q:'Find the discriminant of 2x²+3x+5.',a:[-31],m:2,sol:'b²−4ac = 3²−4(2)(5) [M1] = 9−40 = −31 [A1]. Negative, so no real roots.'},
+{q:'Write x²+6x+1 in the form (x+p)²+q. Give the value of q.',a:[-8],m:2,sol:'(x+3)² = x²+6x+9 [M1], so x²+6x+1 = (x+3)² − 8 [A1]. q = −8, which is also the minimum value.'}]},
+{id:'m2',s:'M',g:'Pure',n:'Differentiation',teach:'<b>Differentiation</b> gives the gradient function. Rule: if y=axⁿ then dy/dx=anxⁿ⁻¹ (multiply by the power, then reduce the power by 1). Constants differentiate to 0. A gradient at a point: differentiate, then substitute the x-value. Stationary points are where dy/dx=0.<br><span class="bad">Common mistake:</span> differentiating the constant term as if it stays.',qs:[
+{q:'y = 3x⁴ − 2x. Find the gradient when x = 1.',a:[10],m:3,sol:'dy/dx = 12x³ − 2 [M1 A1]. At x=1: 12−2 = 10 [A1].'},
+{q:'y = x³ − 12x. Find the positive x-value of the stationary point.',a:[2],m:3,sol:'dy/dx = 3x² − 12 [M1]. Set to 0: x² = 4 [M1]. Positive value x = 2 [A1].'}]},
+{id:'m3',s:'M',g:'Pure',n:'Integration',teach:'<b>Integration</b> reverses differentiation: ∫axⁿdx = a xⁿ⁺¹/(n+1) + c (add 1 to the power, divide by the new power). For a <b>definite integral</b>, integrate, substitute the top limit, subtract the bottom limit. No +c needed in definite integrals.<br><span class="bad">Common mistake:</span> forgetting +c on indefinite integrals (lose a mark every time).',qs:[
+{q:'Evaluate ∫ from 0 to 1 of (6x² + 2) dx.',a:[4],m:3,sol:'∫ = 2x³ + 2x [M1 A1]. Top limit: 2+2 = 4, bottom limit: 0. Answer 4 [A1].'}]},
+{id:'c1',s:'C',g:'Physical',n:'3.1.2 Amount of substance',teach:'<b>Moles</b> link mass, concentration and gas volume.<br>• n = m / Mr (mol = g ÷ g mol⁻¹)<br>• c = n / V, with V in <b>dm³</b> (divide cm³ by 1000) → mol dm⁻³<br>• Ideal gas: pV = nRT, with p in <b>Pa</b>, V in <b>m³</b>, T in <b>K</b>, R = 8.31 J K⁻¹ mol⁻¹.<br>Always: write the formula, substitute with units, give an answer to the right number of significant figures (match the data).<br><span class="bad">Common mistake:</span> using cm³ in c = n/V, or °C instead of K.',qs:[
+{q:'Calculate the moles in 5.30 g of Na₂CO₃ (Mr = 106.0). Answer in mol.',a:[0.05],m:2,sol:'n = m/Mr [M1] = 5.30/106.0 = 0.0500 mol [A1].'},
+{q:'0.0500 mol of solute is dissolved to make 250 cm³ of solution. Concentration in mol dm⁻³?',a:[0.2],m:2,sol:'V = 250/1000 = 0.250 dm³ [M1]. c = 0.0500/0.250 = 0.200 mol dm⁻³ [A1].'},
+{q:'Volume of 0.0200 mol of gas at 298 K and 100 kPa, in cm³ (3 s.f.)? R = 8.31.',a:[495],m:4,sol:'p = 100 000 Pa [B1]. V = nRT/p [M1] = (0.0200 × 8.31 × 298)/100 000 [M1] = 4.95×10⁻⁴ m³ = 495 cm³ [A1] (×10⁶ to convert m³ to cm³).'}]},
+{id:'c2',s:'C',g:'Physical',n:'3.1.4 Energetics',teach:'<b>Calorimetry:</b> q = m c ΔT, where m is the mass of <i>water</i> (g), c = 4.18 J g⁻¹ K⁻¹, ΔT in K (or °C change). q is in <b>J</b>; divide by 1000 for kJ. Then ΔH = −q/n (per mole), negative if temperature rises (exothermic).<br><span class="bad">Common mistake:</span> using the mass of the solid, not the water; forgetting the sign of ΔH.',qs:[
+{q:'50.0 g of water rises in temperature by 6.0 K. Calculate q in J (c = 4.18 J g⁻¹ K⁻¹).',a:[1254,1250],m:2,sol:'q = mcΔT [M1] = 50.0 × 4.18 × 6.0 = 1254 J, i.e. 1250 J (3 s.f.) [A1].'}]}];
+const SYL={M:{Pure:['Proof','Algebra and functions (quadratics)','Coordinate geometry','Sequences and series','Trigonometry','Exponentials and logarithms','Differentiation','Integration','Vectors'],Statistics:['Statistical sampling','Data presentation and interpretation','Probability','Statistical distributions','Hypothesis testing'],Mechanics:['Quantities and units','Kinematics','Forces and Newton’s laws']},
+C:{Physical:['3.1.1 Atomic structure','3.1.2 Amount of substance','3.1.3 Bonding','3.1.4 Energetics','3.1.5 Kinetics','3.1.6 Chemical equilibria','3.1.7 Oxidation, reduction and redox'],Inorganic:['3.2.1 Periodicity','3.2.2 Group 2','3.2.3 Group 7'],Organic:['3.3.1 Introduction to organic','3.3.2 Alkanes','3.3.3 Halogenoalkanes','3.3.4 Alkenes','3.3.5 Alcohols','3.3.6 Organic analysis']}};
+const LV=['Not studied','Studied','Right with help','Independent','Mastered (timed)'];
+let S={st:{},ok:{},tot:{},wrong:[],exam:{M:'',C:''},hrs:{M:3,C:3}},tab='home',sub='M';
+try{S=Object.assign(S,JSON.parse(localStorage.getItem('rev1')||'{}'))}catch(e){}
+const save=()=>{S._t=Date.now();try{localStorage.setItem('rev1',JSON.stringify(S))}catch(e){};clearTimeout(pt);pt=setTimeout(push,1500)};
+const $=s=>document.querySelector(s),key=n=>n.replace(/\W/g,'').slice(0,24);
+const topicsOf=s=>Object.values(SYL[s]).flat();
+const lvl=(s,n)=>S.st[s+n]||0;
+const pct=s=>{const a=topicsOf(s);return Math.round(a.reduce((x,n)=>x+lvl(s,n),0)/(a.length*4)*100)};
+const acc=id=>S.tot[id]?Math.round(100*(S.ok[id]||0)/S.tot[id]):null;
+function nav(){const t=[['home','🏠 Home'],['learn','📖 Learn'],['plan','⏳ Plan'],['mist','📓 Mistakes']];$('#nav').innerHTML=t.map(x=>`<button class="${tab==x[0]?'on':''}" onclick="tab='${x[0]}';render()">${x[1]}</button>`).join('')}
+function tabs(){return `<div class="tabs"><button class="b ${sub=='M'?'pri':''} M" onclick="sub='M';render()">➗ Edexcel Maths</button><button class="b ${sub=='C'?'pri':''} C" onclick="sub='C';render()">🧪 AQA Chemistry</button></div>`}
+function home(){return acct()+['M','C'].map(s=>`<div class="card ${s}"><b>${s=='M'?'Edexcel AS Maths (8MA0)':'AQA AS Chemistry (7404)'}</b><div class="mu">Syllabus progress: ${pct(s)}%</div><div class="bar"><i style="width:${pct(s)}%"></i></div></div>`).join('')+
+`<div class="card"><b>Paper structure (verified)</b><div class="mu">Edexcel 8MA0: Paper 1 Pure, 2 h, 100 marks (62.5%). Paper 2 Statistics &amp; Mechanics, 1 h 15, 60 marks (37.5%), 30 + 30. Source: Pearson spec.<br>AQA 7404: check paper times and marks on the AQA website, I haven’t verified them in this app.</div></div>
+<div class="card"><b>Accuracy so far</b>${T.map(t=>`<div class="mu">${t.n}: ${acc(t.id)==null?'no questions yet':acc(t.id)+'%'}</div>`).join('')}</div>`}
+function learn(){let h=tabs();h+=`<h2>Hands-on topics</h2>`;T.filter(t=>t.s==sub).forEach(t=>{h+=`<details class="${sub}"><summary>${t.n} <span class="tag">${acc(t.id)==null?'':acc(t.id)+'%'}</span></summary><div class="card">${t.teach}</div>${t.qs.map((q,i)=>`<div class="card"><div class="mu">Q${i+1} · ${q.m} marks</div>${q.q}<div class="row" style="margin-top:8px"><input id="a${t.id}${i}" inputmode="decimal" placeholder="answer" style="width:110px"><button class="b pri" onclick="chk('${t.id}',${i})">Check</button></div><div id="r${t.id}${i}"></div></div>`).join('')}</details>`});
+h+=`<h2>Specification checklist</h2><div class="mu">Tap the level to move it up. Mastered means independent AND timed, so be honest 😉</div>`;
+Object.entries(SYL[sub]).forEach(([g,a])=>{h+=`<details class="${sub}"><summary>${g}</summary>${a.map(n=>`<div class="row" style="justify-content:space-between;margin:6px 0"><span>${n}</span><button class="b" onclick="up('${sub}','${n.replace(/'/g,"\\'")}')">${LV[lvl(sub,n)]}</button></div>`).join('')}</details>`});
+return h}
+function up(s,n){S.st[s+n]=(lvl(s,n)+1)%5;save();render()}
+function chk(id,i){const t=T.find(x=>x.id==id),q=t.qs[i],v=parseFloat($('#a'+id+i).value),r=$('#r'+id+i);if(isNaN(v)){r.innerHTML='<span class="bad">Enter a number first</span>';return}
+const good=q.a.some(a=>Math.abs(v-a)<=Math.abs(a)*0.01+1e-9);S.tot[id]=(S.tot[id]||0)+1;if(good)S.ok[id]=(S.ok[id]||0)+1;else S.wrong.push({id,q:q.q,mine:v,sol:q.sol,d:new Date().toLocaleDateString('en-GB'),n:t.n});save();
+r.innerHTML=`<div class="${good?'ok':'bad'}">${good?'✅ Correct':'❌ Not quite'}</div><div class="sol"><b>Mark scheme:</b> ${q.sol}</div>`}
+function plan(){const s=sub,d=S.exam[s],days=d?Math.ceil((new Date(d)-new Date(new Date().toDateString()))/864e5):null;
+let h=tabs()+`<div class="card ${s}"><div class="row"><label>Exam date <input type="date" value="${d||''}" onchange="S.exam['${s}']=this.value;save();render()"></label><label>Hours/day <input type="number" min="0.5" max="6" step="0.5" value="${S.hrs[s]}" style="width:70px" onchange="S.hrs['${s}']=+this.value;save();render()"></label></div></div>`;
+if(days==null)return h+'<div class="mu">Add your exam date to see your plan.</div>';
+if(days<0)return h+'<div class="mu">That date has passed.</div>';
+const todo=topicsOf(s).map(n=>[n,lvl(s,n)]).filter(x=>x[1]<3).sort((a,b)=>a[1]-b[1]),crunch=days<=21;
+h+=`<div class="card"><b>${days} days to go</b> ${crunch?'<span class="pill">🔥 Crunch mode</span>':''}<div class="mu">${todo.length} topics still below “Independent”. ${crunch?'Focus: weakest topics first, then mixed timed questions. Keep sessions sensible and sleep matters.':'Steady pace: learn each topic, then test yourself without help.'}</div></div><h2>Next up</h2>`;
+const per=Math.max(1,Math.ceil(todo.length/Math.max(1,days)));
+h+=todo.slice(0,per*3).map((x,i)=>`<div class="card mu">Day ${Math.floor(i/per)+1}: ${x[0]} <span class="tag">(${LV[x[1]]})</span></div>`).join('')||'<div class="mu">All topics at Independent or above 🎉</div>';
+if(days>0&&S.hrs[s]*days<todo.length)h+='<div class="card bad">At this pace you won’t cover everything. Raise daily hours a little, or prioritise the weakest topics. Not all-nighters.</div>';
+return h}
+function mist(){return `<h2>Mistake notebook</h2>`+(S.wrong.length?S.wrong.slice().reverse().map((w,i)=>`<details><summary>${w.n} · ${w.d}</summary><div class="mu">${w.q}</div><div class="bad">You put: ${w.mine}</div><div class="sol">${w.sol}</div></details>`).join('')+`<button class="b" onclick="if(confirm('Clear notebook?')){S.wrong=[];save();render()}">Clear</button>`:'<div class="mu">Nothing yet. Wrong answers land here automatically.</div>')}
+function render(){nav();$('#app').innerHTML=({home,learn,plan,mist})[tab]()}
+const SB='https://mkntfpqtxnrnigmvmbyc.supabase.co',KEY='sb_publishable_fXWn4_Ru0Mb7p_WR5P5oyA_59rwEdbe';
+let ses=null,msg='',msg2='',pt=null;
+try{ses=JSON.parse(localStorage.getItem('rev_ses')||'null')}catch(e){}
+const H=t=>({apikey:KEY,Authorization:'Bearer '+(t||KEY),'Content-Type':'application/json'});
+const auth=async(path,body)=>(await fetch(SB+'/auth/v1/'+path,{method:'POST',headers:H(),body:JSON.stringify(body)})).json();
+function setSes(j){if(j&&j.access_token&&j.user){ses={at:j.access_token,rt:j.refresh_token,uid:j.user.id,em:j.user.email};try{localStorage.setItem('rev_ses',JSON.stringify(ses))}catch(e){}return true}return false}
+async function login(up){const em=$('#em').value.trim(),pw=$('#pw').value;msg='Working…';render();try{const j=await auth(up?'signup':'token?grant_type=password',{email:em,password:pw});if(setSes(j)){msg='';await pull()}else msg=up?'Account created. If asked, confirm via the email we sent, then tap Log in.':(j.msg||j.error_description||'Login failed')}catch(e){msg='No internet?'}render()}
+async function api(m,path,body,retry){if(!ses)return null;const r=await fetch(SB+'/rest/v1/'+path,{method:m,headers:{...H(ses.at),Prefer:'resolution=merge-duplicates'},body:body?JSON.stringify(body):undefined});
+if(r.status==401&&!retry){try{const j=await auth('token?grant_type=refresh_token',{refresh_token:ses.rt});if(setSes(j))return api(m,path,body,1)}catch(e){}}return r}
+async function pull(){try{const r=await api('GET','user_data?select=data,updated_at');if(!r||!r.ok){msg2='Could not reach the cloud';render();return}const rows=await r.json();
+if(rows[0]){const t=Date.parse(rows[0].updated_at);if(t>(S._t||0)){Object.assign(S,rows[0].data);S._t=t;try{localStorage.setItem('rev1',JSON.stringify(S))}catch(e){}msg2='Synced ✓ (downloaded)'}else await push()}else await push()}catch(e){msg2='Offline, will sync later'}render()}
+async function push(){if(!ses)return;try{const r=await api('POST','user_data',{user_id:ses.uid,data:S,updated_at:new Date(S._t||Date.now()).toISOString()});msg2=r&&r.ok?'Synced ✓ '+new Date().toLocaleTimeString('en-GB'):'Sync failed, will retry'}catch(e){msg2='Offline, will sync later'}}
+function out(){ses=null;try{localStorage.removeItem('rev_ses')}catch(e){}render()}
+function exp(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:'application/json'}));a.download='revision-backup.json';a.click()}
+function acct(){return '<div class="card"><b>☁️ Account</b>'+(ses?`<div class="mu">${ses.em}<br>${msg2}</div><div class="row"><button class="b" onclick="pull()">Sync now</button><button class="b" onclick="exp()">Export backup</button><button class="b" onclick="out()">Log out</button></div>`:`<div class="mu">Log in to sync your iPhone and iPad. Without it, progress stays on this device.</div><div class="row"><input id="em" type="email" placeholder="email" autocapitalize="none"><input id="pw" type="password" placeholder="password (6+ chars)"></div><div class="row" style="margin-top:8px"><button class="b pri" onclick="login(0)">Log in</button><button class="b" onclick="login(1)">Sign up</button></div><div class="bad">${msg}</div>`)+'</div>'}
+addEventListener('online',push);
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+if(ses)pull();
+render();
+</script></body></html>
